@@ -1,0 +1,54 @@
+*{
+  margin:0;
+  padding:0;
+  }
+  
+  *,
+  *::before,
+  *::after{
+  box-sizing:inherit;
+  }
+  
+  html{
+  box-sizing: border-box;
+  }
+  
+  body{
+  line-height:1.6;
+  min-height:100vh;
+  background: rgb(8,159,191);
+  background: linear-gradient(49deg, rgba(8,159,191,1) 0%, rgba(78,197,223,1) 100%);
+  padding: 1rem; 
+  }
+
+  @media only screen and (max-width: 340px) {
+    html{
+      font-size: 90%;
+    }
+  }
+
+  @media only screen and (min-width: 380px) {
+    html{
+      font-size: 110%;
+    }
+  }
+
+  @media only screen and (min-width: 450px) {
+    html{
+      font-size: 125%;
+    }
+  }
+
+
+  @media only screen and (min-width: 600px) {
+    html{
+      font-size: 150%;
+    }
+  }
+
+  @media only screen and (min-width: 750px) {
+    html{
+      font-size: 175%;
+    }
+  }
+  

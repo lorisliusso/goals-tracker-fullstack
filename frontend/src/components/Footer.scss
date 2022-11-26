@@ -1,0 +1,23 @@
+.footer {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    color: aquamarine;
+    font-weight: 600;
+
+    .img-container {
+        display: flex;
+        gap: 0.2rem;
+        align-items: center;
+
+
+        .react-logo {
+            height: 2rem;
+        }
+
+        .django-logo {
+            height: 2rem;
+        }
+
+    }
+}

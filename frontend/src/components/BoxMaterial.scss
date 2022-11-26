@@ -1,0 +1,47 @@
+div {
+
+    .edit {
+        padding: 0.4rem 0.6rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(170, 192, 195);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.5rem;
+
+        &:hover {
+            background-color: rgb(161, 170, 172);
+        }
+    }
+
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .btn-apply {
+        padding: 0.4rem 0.6rem;
+        border-radius: 5px;
+        border: none;
+        background-color: rgb(177, 202, 205);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 0.55rem;
+        margin-left: 0.3rem;
+
+        &:hover {
+            background-color: rgb(147, 178, 184);
+        }
+
+    }
+
+    input {
+        font-size: 0.7rem;
+        border-radius: 5px;
+        border: none;
+        padding: 0.3rem;
+    }
+
+
+}
