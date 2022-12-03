@@ -1,90 +1,76 @@
 import './TodoList.scss'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import BoxMaterialUI from './Box-MaterialUI'
-import { useDispatch, useSelector } from 'react-redux'
-import { getGoals } from '../actions/goalsActions'
-
+import { useQuery, useMutation, gql } from '@apollo/client';
 
 const TodoList = () => {
 
+    //get
+    const GET_GOALS = gql`
+     query getGoals{
+       goals {
+        id
+        goal
+        completed
+       }
+     }
+   `;
+
+    //post
+    const ADD_GOAL = gql`
+   mutation createNewGoal($newGoal: String!) {
+     createNewGoal(newGoal: $newGoal) {
+       goal{
+        id
+        goal
+       }
+     }
+    }
+ `;
+    //delete
+    const DELETE_GOAL = gql`
+ mutation deleteGoal($id: ID!) {
+   deleteGoal(id: $id) {
+    msg
+  }
+ }
+`;
+
     const [goal, setGoal] = useState('')
-    const dispatch = useDispatch()
-    const goalsState = useSelector(state => state.goals)
-    const { goals } = goalsState
-
-
-    useEffect(() => {
-
-        dispatch(getGoals())
-
-    }, [])
+    const { loading, error, data } = useQuery(GET_GOALS);
+    const [createNewGoal] = useMutation(ADD_GOAL, {
+        refetchQueries: [
+            { query: GET_GOALS }]
+    });
+    const [deleteGoal] = useMutation(DELETE_GOAL, {
+        refetchQueries: [
+            { query: GET_GOALS }]
+    });
 
 
     function handleChange(e) {
         setGoal(e.target.value)
     }
 
-
     function handleSubmit(e) {
         e.preventDefault()
 
-        axios.post('api/goals/manage-goals/', {
-            "goal": goal,
-        },
-        )
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        createNewGoal({
+            variables: { newGoal: goal },
+        });
 
         setGoal('')
-
-        dispatch(getGoals())
-
     }
-
 
     function handleDelete(id) {
 
-        axios.delete('api/goals/manage-goals/', {
-            data: {
-                "goal_id": id
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        dispatch(getGoals())
-
+        deleteGoal({
+            variables: { id: id },
+        });
     }
 
-
-    function handleCompleted(id, completed) {
-
-        axios.put('api/goals/manage-goals/', {
-            'goal_id': id,
-            "goal_completed": !completed,
-        },
-        )
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-
-        dispatch(getGoals())
-
-    }
-
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
 
     return (
 
@@ -98,18 +84,18 @@ const TodoList = () => {
             </form>
             <ul className='todo-list__ul'>
 
-                {goals.map(goal => {
+                {data.goals.map(goal => {
 
                     return (
 
                         <li key={goal.id}>
                             <p>{goal.goal}</p>
-                            <input className='checkbox' onClick={() => handleCompleted(goal.id, goal.completed)}
+                            <input className='checkbox'
                                 type="checkbox" id="completed" defaultChecked={goal.completed} />
 
                             <div>
                                 <BoxMaterialUI value={goal.goal} id={goal.id} />
-                                <button className='btn-delete' onClick={() => handleDelete(goal.id)}>DELETE</button>
+                                <button onClick={() => handleDelete(goal.id)} className='btn-delete'>DELETE</button>
 
                             </div>
                         </li>

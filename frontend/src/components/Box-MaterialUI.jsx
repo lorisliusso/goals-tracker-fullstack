@@ -2,10 +2,9 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { getGoals } from '../actions/goalsActions'
 import "./BoxMaterial.scss"
+import { useMutation, gql } from '@apollo/client';
+
 
 
 const style = {
@@ -23,27 +22,30 @@ const style = {
 
 const BoxMaterialUI = ({ value, id }) => {
 
+    const UPDATE_GOAL = gql`
+    mutation updateGoal($id: ID!, $goal: String!) {
+      updateGoal(id: $id, goal: $goal) {
+        updatedGoal{
+       id
+       goal
+      }
+     }
+    }
+   `;
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [newValue, setNewValue] = React.useState(value)
-    const dispatch = useDispatch()
+    const [updateGoal] = useMutation(UPDATE_GOAL);
+
 
     function editGoal() {
 
-        axios.put('api/goals/edit-goal/', {
-            'goal_id': id,
-            "edit_goal": newValue,
-        },
-        )
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        dispatch(getGoals())
+        updateGoal({
+            variables: { id, goal: newValue },
+        });
+        console.log(id)
     }
 
     return (

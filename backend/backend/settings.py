@@ -38,18 +38,23 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "graphene_django",
     'rest_framework',
     'corsheaders',
 
     'base.apps.BaseConfig',
 ]
 
+GRAPHENE = {
+    "SCHEMA": "base.schema.schema"
+}
+
 REST_FRAMEWORK = {
- 
 
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
 }
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
